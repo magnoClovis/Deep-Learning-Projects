@@ -173,6 +173,7 @@ print(bool(new > 0.5))
 
 # ------------ FUNCTION FOR MAKING NEW PREDICTIONS ------------
 
-from new_predictions import new_predict
+from new_predictions import new_predictions
 
-predictions = new_predict(ann)
+predictions = new_predictions(ann)
+

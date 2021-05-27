@@ -35,6 +35,7 @@ def new_predictions(ann, predict =''):
         data_list = [[tpl_country[0], tpl_country[1], credit, int_gender, age, tenure, balance,
                      prodc, int_card, int_active, salary]]
         
+        
         new_predict = ann.predict(sc.transform(data_list))
         prob_predict = round((float(new_predict))*100,2)
         bool_predict = (bool(new_predict > 0.5))
