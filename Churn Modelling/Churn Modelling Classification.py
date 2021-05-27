@@ -93,6 +93,8 @@ def build_classifier():
     ann = tf.keras.models.Sequential()
     ann.add(tf.keras.layers.Dense(units = 6, activation='relu'))
     ann.add(Dropout(rate = 0.1))
+    ann.add(tf.keras.layers.Dense(units = 12, activation='relu'))
+    ann.add(Dropout(rate = 0.1))
     ann.add(tf.keras.layers.Dense(units = 6, activation='relu'))
     ann.add(Dropout(rate = 0.1))
     ann.add(tf.keras.layers.Dense(units = 1, activation='sigmoid'))
@@ -164,52 +166,13 @@ third = [[0,0,700,0,30,3,62000,1,1,1,52000]]
 
 fourth = [[0,1,630,0,27,1,20000,1,0,1,31000]]
 
-a = [[0,0,420,0,60,1,12000,1,1,0,300000]]
-new = ann.predict(sc.transform(a))
+test = [[0,0,420,0,60,1,12000,1,1,0,300000]]
+new = ann.predict(sc.transform(test))
 print(float(new))
 print(bool(new > 0.5))
 
 # ------------ FUNCTION FOR MAKING NEW PREDICTIONS ------------
 
-def new_predictions(ann, predict =''):
-    
-    predictions = []
-    while True:
-        data_list = []
-        dict_country = {'france' : (0,0), 'germany': (1,0), 'spain': (0,1)}
-        dict_gender = {'male': 1, 'female': 0}
-        bool_dict = {'yes': 1, 'no':0}
-        country = str(input("Country: ")).lower()
-        credit = int(input("Credit Score: "))
-        gender = str(input("Gender: ")).lower()
-        age = int(input("Age: "))
-        tenure = int(input("Tenure: "))
-        balance = float(input("Balance: "))
-        prodc = int(input("Number of products: "))
-        card = str(input("Does this customer have a credit card? ")).lower()
-        active = str(input("Is this customer an active member? ")).lower()
-        salary = float(input("Estimated salary: "))
-        
-        tpl_country = dict_country[country]
-        int_gender = dict_gender[gender]
-        int_card = bool_dict[card]
-        int_active = bool_dict[active]
-        
-        data_list = [[tpl_country[0], tpl_country[1], credit, int_gender, age, tenure, balance,
-                     prodc, int_card, int_active, salary]]
-        
-        new_predict = ann.predict(sc.transform(data_list))
-        prob_predict = round((float(new_predict))*100,2)
-        bool_predict = (bool(new_predict > 0.5))
-        
-        result = (prob_predict,bool_predict) 
-        predictions.append(result)
-        
-        print('The probability of the customer to leave the bank is about', prob_predict, '%.')
-        
-        verif = str(input("Type 'exit' to exit the program or press anything to make another prediction. \n")).lower()
-        if verif == 'exit':
-            return predictions
+from new_predictions import new_predict
 
-
-predictions = new_predictions(ann)
+predictions = new_predict(ann)

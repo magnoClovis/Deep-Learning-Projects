@@ -1,0 +1,5 @@
+mean accuracy: 85%
+
+86% of accuracy on the test set
+
+84% of accurary on the training set
