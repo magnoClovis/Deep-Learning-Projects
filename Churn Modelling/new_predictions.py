@@ -5,10 +5,10 @@ Created on Thu May 27 23:25:09 2021
 @author: clovi
 """
 
-from sklearn.preprocessing import StandardScaler
-sc = StandardScaler()
+'''from sklearn.preprocessing import StandardScaler
+ss = StandardScaler()'''
 
-def new_predictions(ann, predict =''):
+def NewPredictions(ann, ss, predict =''):
     
     predictions = []
     while True:
@@ -36,7 +36,7 @@ def new_predictions(ann, predict =''):
                      prodc, int_card, int_active, salary]]
         
         
-        new_predict = ann.predict(sc.transform(data_list))
+        new_predict = ann.predict(ss.transform(data_list))
         prob_predict = round((float(new_predict))*100,2)
         bool_predict = (bool(new_predict > 0.5))
         

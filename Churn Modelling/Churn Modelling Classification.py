@@ -35,9 +35,9 @@ xtrain, xtest, ytrain, ytest = train_test_split(x,y,test_size=0.2, random_state 
 
 # Scaling
 from sklearn.preprocessing import StandardScaler
-sc = StandardScaler()
-xtrain = sc.fit_transform(xtrain)
-xtest = sc.fit_transform(xtest)
+ss = StandardScaler()
+xtrain = ss.fit_transform(xtrain)
+xtest = ss.fit_transform(xtest)
 
 
 # ------------ BUILDING THE ANN LAYERS ------------
@@ -47,15 +47,15 @@ ann = tf.keras.models.Sequential()
 
 # Input layer and the first hideen layer
 
-ann.add(tf.keras.layers.Dense(units = 6, activation='relu'))
+ann.add(tf.keras.layers.Dense(units = 55, activation='relu'))
 ann.add(Dropout(rate = 0.1))
 
 # Second hidden layer
-ann.add(tf.keras.layers.Dense(units = 12, activation='relu'))
+ann.add(tf.keras.layers.Dense(units = 75, activation='relu'))
 ann.add(Dropout(rate = 0.1))
 
 # Third hidden layer
-ann.add(tf.keras.layers.Dense(units = 6, activation='relu'))
+ann.add(tf.keras.layers.Dense(units = 55, activation='relu'))
 ann.add(Dropout(rate = 0.1))
 
 # Output layer
@@ -91,11 +91,11 @@ from tensorflow.keras.models import Sequential # serve pra iniciar a rede neural
 from tensorflow.keras.layers import Dense # serve para fazer as camadas
 def build_classifier():
     ann = tf.keras.models.Sequential()
-    ann.add(tf.keras.layers.Dense(units = 6, activation='relu'))
+    ann.add(tf.keras.layers.Dense(units = 55, activation='relu'))
     ann.add(Dropout(rate = 0.1))
-    ann.add(tf.keras.layers.Dense(units = 12, activation='relu'))
+    ann.add(tf.keras.layers.Dense(units = 75, activation='relu'))
     ann.add(Dropout(rate = 0.1))
-    ann.add(tf.keras.layers.Dense(units = 6, activation='relu'))
+    ann.add(tf.keras.layers.Dense(units = 55, activation='relu'))
     ann.add(Dropout(rate = 0.1))
     ann.add(tf.keras.layers.Dense(units = 1, activation='sigmoid'))
     ann.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
@@ -167,14 +167,16 @@ third = [[0,0,700,0,30,3,62000,1,1,1,52000]]
 fourth = [[0,1,630,0,27,1,20000,1,0,1,31000]]
 
 test = [[0,0,420,0,60,1,12000,1,1,0,300000]]
-new = ann.predict(sc.transform(test))
+new = ann.predict(ss.transform(test))
 print(float(new))
 print(bool(new > 0.5))
 
 # ------------ FUNCTION FOR MAKING NEW PREDICTIONS ------------
 
-from new_predictions import new_predictions
+from new_predictions import NewPredictions
 
-predictions = new_predictions(ann)
+predictions = NewPredictions(ann, ss)
 
-
+''' It is necessary to pass the StandardScaler parameter into the function becausse that way
+the function can understand the fitting method used, otherwise, the NewPredictions function 
+(when running from another file) returns errors,'''
