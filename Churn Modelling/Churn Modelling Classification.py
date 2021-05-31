@@ -85,25 +85,14 @@ loss = np.mean(hist.history['loss'])
 
 
 # ----------------------------------
-from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.model_selection import cross_val_score
-from tensorflow.keras.models import Sequential # serve pra iniciar a rede neural
-from tensorflow.keras.layers import Dense # serve para fazer as camadas
-def build_classifier():
-    ann = tf.keras.models.Sequential()
-    ann.add(tf.keras.layers.Dense(units = 55, activation='relu'))
-    ann.add(Dropout(rate = 0.1))
-    ann.add(tf.keras.layers.Dense(units = 75, activation='relu'))
-    ann.add(Dropout(rate = 0.1))
-    ann.add(tf.keras.layers.Dense(units = 55, activation='relu'))
-    ann.add(Dropout(rate = 0.1))
-    ann.add(tf.keras.layers.Dense(units = 1, activation='sigmoid'))
-    ann.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
-    return ann 
-classifier = KerasClassifier(build_fn = build_classifier, batch_size = 32, epochs = 100)
-accuracies = cross_val_score(estimator = classifier, X = xtrain, y = ytrain, cv = 10)
-mean_acc = accuracies.mean()
 
+from evaluating import build_classifier, evaluating_accuracy
+
+# build_classifier(unit_1, unit_2, unit_3, actv_1 = 'relu', actv_2 = 'relu', actv_3 = 'relu',dropout=0.1)
+# evaluating_accuracy(ss, xtrain, ytrain, num_batch, num_epochs, num_cv, build_ann)
+
+build_ann = build_classifier(55, 77, 55)
+mean_acc = evaluating_accuracy (ss, xtrain, ytrain, 32, 100, 10, build_ann)
 
 # ------------NEW PREDICTIONS------------
 

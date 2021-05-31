@@ -5,8 +5,8 @@ Created on Thu May 27 23:25:09 2021
 @author: clovi
 """
 
-'''from sklearn.preprocessing import StandardScaler
-ss = StandardScaler()'''
+from sklearn.preprocessing import StandardScaler
+#ss = StandardScaler()
 
 def NewPredictions(ann, ss, predict =''):
     
