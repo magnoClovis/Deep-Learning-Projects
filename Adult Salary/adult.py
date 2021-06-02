@@ -8,6 +8,7 @@ Created on Tue Jun  1 10:32:55 2021
 import pandas as pd
 import numpy as np
 import tensorflow as tf
+import os
 
 # IMPORTAR DATASET E SEPARAR EM VARIAVEL DEPENDENTE E INDEPENDENTE
 
@@ -42,18 +43,22 @@ xtest = sc.fit_transform(xtest)
 # CONSTRUINDO A REDE NEURAL
 
 ann = tf.keras.models.Sequential()
-
-ann.add(tf.keras.layers.Dense(units = , activation = 'relu'))
-
-ann.add(tf.keras.layers.Dense(units = 30, activation = 'relu'))
-
-ann.add(tf.keras.layers.Dense(units = 30, activation = 'relu'))
-
+ann.add(tf.keras.layers.Dense(units = 6, activation = 'relu'))
+ann.add(tf.keras.layers.Dense(units = 6, activation = 'relu'))
 ann.add(tf.keras.layers.Dense(units = 1, activation = 'sigmoid'))
 
 ann.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 
-hist = ann.fit(xtrain, ytrain, batch_size = 25, epochs = 100)
+#Create checkpoint path
+checkpoint_path = "D:\clovi\Estudos\Deep-Learning-Projects\Adult Salary\cp.ckpt"
+checkpoint_dir = os.path.dirname(checkpoint_path)
+
+#Create checkpoint callback
+cp_callback = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, save_weights_only = True, verbose = 1)
+
+hist = ann.fit(xtrain, ytrain, batch_size = 25, epochs = 200, callbacks = [cp_callback])
+
+ann.save('adult.h5')
 
 mean = np.mean(hist.history['accuracy'])
 
@@ -66,3 +71,13 @@ cm = confusion_matrix(ytest, ypredb)
 
 mean_test = accuracy_score(ytest,ypredb)
 loss = np.mean(hist.history['loss'])
+
+'''
+model.load_weights(checkpoint_path)
+loss,acc = model.evaluate(xtest, ytest)
+print("Restored model, accuracy:{:5.2f}%".format(100*acc))
+
+
+new_model = keras.models.load_model('my_model.h5')
+new_model.summary()
+'''

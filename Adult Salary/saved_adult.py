@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jun  1 11:26:00 2021
+Created on Tue Jun  1 18:26:41 2021
 
 @author: clovi
 """
@@ -8,6 +8,7 @@ Created on Tue Jun  1 11:26:00 2021
 import pandas as pd
 import numpy as np
 import tensorflow as tf
+import os
 
 # IMPORTAR DATASET E SEPARAR EM VARIAVEL DEPENDENTE E INDEPENDENTE
 
@@ -19,15 +20,7 @@ y = df.iloc[: , -1].values
 
 from sklearn.preprocessing import LabelEncoder
 le = LabelEncoder()
-x[:, 1] = le.fit_transform(x[:, 1])
-x[:, 2] = le.fit_transform(x[:, 2])
-x[:, 4] = le.fit_transform(x[:, 4])
-x[:, 5] = le.fit_transform(x[:, 5])
-x[:, 6] = le.fit_transform(x[:, 6])
-x[:, 7] = le.fit_transform(x[:, 7])
 x[:, 8] = le.fit_transform(x[:, 8])
-x[:, 12] = le.fit_transform(x[:, 12])
-
 y = le.fit_transform(y)
 
 from sklearn.preprocessing import OneHotEncoder
@@ -50,16 +43,18 @@ xtest = sc.fit_transform(xtest)
 # CONSTRUINDO A REDE NEURAL
 
 ann = tf.keras.models.Sequential()
-
 ann.add(tf.keras.layers.Dense(units = 6, activation = 'relu'))
-
 ann.add(tf.keras.layers.Dense(units = 6, activation = 'relu'))
-
 ann.add(tf.keras.layers.Dense(units = 1, activation = 'sigmoid'))
 
 ann.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 
-hist = ann.fit(xtrain, ytrain, batch_size = 25, epochs = 100)
+#Loading trained model
+checkpoint_path = "D:\clovi\Estudos\Deep-Learning-Projects\Adult Salary\cp.ckpt"
+ann.load_weights(checkpoint_path)
+loss,acc = ann.evaluate(xtest, ytest)
+print("Restored model, accuracy:{:5.2f}%".format(100*acc))
+hist = ann.fit(xtrain, ytrain, batch_size = 25, epochs = 200)
 
 mean = np.mean(hist.history['accuracy'])
 
@@ -72,3 +67,7 @@ cm = confusion_matrix(ytest, ypredb)
 
 mean_test = accuracy_score(ytest,ypredb)
 loss = np.mean(hist.history['loss'])
+
+new_ann = tf.keras.models.load_model('adult.h5')
+new_ann.summary()
+
