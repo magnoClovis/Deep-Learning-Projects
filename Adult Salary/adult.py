@@ -23,6 +23,16 @@ le = LabelEncoder()
 x[:, 8] = le.fit_transform(x[:, 8])
 y = le.fit_transform(y)
 
+----
+# Creating dummies variables to know the encoding used by the computer 
+workclass = tuple(df['workclass'].unique())
+work_df = pd.DataFrame(workclass, columns=['workclass'])
+dum_df = pd.get_dummies(work_df, columns = ['workclass'])
+work_df = work_df.join(dum_df)
+
+----
+
+
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 ct = ColumnTransformer(transformers = [('encoder', OneHotEncoder(), [1,2,4])], remainder = 'passthrough')
