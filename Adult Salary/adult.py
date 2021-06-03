@@ -23,22 +23,42 @@ le = LabelEncoder()
 x[:, 8] = le.fit_transform(x[:, 8])
 y = le.fit_transform(y)
 
-----
+#----
 # Creating dummies variables to know the encoding used by the computer 
-workclass = tuple(df['workclass'].unique())
-work_df = pd.DataFrame(workclass, columns=['workclass'])
-dum_df = pd.get_dummies(work_df, columns = ['workclass'])
-work_df = work_df.join(dum_df)
 
-----
+import encoding_keys
+
+work_dict = encoding_keys.workclass(df)
+education_dict = encoding_keys.education(df)
+marital_dict = encoding_keys.marital_status(df)
+occupation_dict = encoding_keys.occupation(df)
+relationship_dict = encoding_keys.relationship(df)
+race_dict = encoding_keys.race(df)
+country_dict = encoding_keys.country(df)
+#----
 
 
+# ENCODING VARIABLES
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 ct = ColumnTransformer(transformers = [('encoder', OneHotEncoder(), [1,2,4])], remainder = 'passthrough')
-x = np.array(ct.fit_transform(x))
-ct = ColumnTransformer(transformers = [('encoder', OneHotEncoder(), [34,35,36,41])], remainder = 'passthrough')
-x = np.array(ct.fit_transform(x))
+x_1 = np.array(ct.fit_transform(x))
+ct = ColumnTransformer(transformers = [('encoder', OneHotEncoder(), [5,6,7])], remainder = 'passthrough')
+x_2 = np.array(ct.fit_transform(x))
+ct = ColumnTransformer(transformers = [('encoder', OneHotEncoder(), [41])], remainder = 'passthrough')
+x_3 = np.array(ct.fit_transform(x_1))
+
+x_n = x[:, 8:12]
+x_n2 = x[:, 0:4:3]
+x_n3 = np.concatenate((x_n2,x_n),axis=1)
+
+x1= x_1[:, 0:31]
+x2 = x_2[:, 0:26]
+x3 = x_3[:, 0:74]
+x4 = np.concatenate((x1,x2),axis=1)
+x5 = np.concatenate((x4,x3),axis=1)
+
+x = np.concatenate((x5,x_n3),axis=1)
 
 # SEPARANDO ENTRE CONJUNTO DE TREINO E CONJUNTO DE TESTE
 from sklearn.model_selection import train_test_split
