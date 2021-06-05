@@ -118,7 +118,7 @@ new_ann = tf.keras.models.load_model('adult.h5')
 new_ann.summary()
 
 ypred = new_ann.predict(xtest)
-ypredb = (ypred > 0.5)
+ypredb = (ypred > 0.5)ç
 
 mean_test = accuracy_score(ytest,ypredb)
 

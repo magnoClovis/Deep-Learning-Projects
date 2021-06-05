@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jun  1 18:26:41 2021
+Created on Tue Jun  1 10:32:55 2021
 
 @author: clovi
 """
-
 
 import pandas as pd
 import numpy as np
@@ -91,15 +90,26 @@ ann.add(tf.keras.layers.Dense(units = 1, activation = 'sigmoid'))
 
 ann.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 
-#-----------------------------------------------------------------------------
 
-# LOADING WEIGHTS FROM CHECKPOINTS AND APPLYING THEM TO THE ACTUAL MODEL
+
+#------------------------------------------------------------------------------
+# CHECKPOINTS
+
+#Create checkpoint path
+
 checkpoint_path = "D:\clovi\Estudos\Deep-Learning-Projects\Adult Salary\cp.ckpt"
-ann.load_weights(checkpoint_path)
-loss,acc = ann.evaluate(xtest, ytest)
-print("Restored model, accuracy:{:5.2f}%".format(100*acc))
-print("Restored model, loss:{:5.2f}".format(loss))
+checkpoint_dir = os.path.dirname(checkpoint_path)
 
+#Create checkpoint callback
+cp_callback = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, save_weights_only = True, verbose = 1)
+hist = ann.fit(xtrain, ytrain, batch_size = 32, epochs = 80, callbacks = [cp_callback])
+#------------------------------------------------------------------------------
+
+ann.save('adult.h5')
+
+mean = np.mean(hist.history['accuracy'])
+
+# EVALUATING THE NETWORK
 ypred = ann.predict(xtest)
 ypredb = (ypred > 0.5)
 
@@ -107,22 +117,23 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 cm = confusion_matrix(ytest, ypredb)
 
 mean_test = accuracy_score(ytest,ypredb)
+loss = np.mean(hist.history['loss'])
 
-#New predictions with the actual model
+
+# NEW PREDICTIONS
+
 import new_predictions
 predictions = new_predictions.NewPredictions(ann, sc, work_dict, education_dict, marital_dict, occupation_dict, relationship_dict, race_dict, country_dict)
 
+'''
+The code below stands for getting the checkpoints and saved models if necessary
 
-# LOADING AND USING A PREVIOUSLY TRAINED MODEL
-new_ann = tf.keras.models.load_model('adult.h5')
-new_ann.summary()
+model.load_weights(checkpoint_path)
+loss,acc = model.evaluate(xtest, ytest)
+print("Restored model, accuracy:{:5.2f}%".format(100*acc))
 
-ypred = new_ann.predict(xtest)
-ypredb = (ypred > 0.5)
 
-mean_test = accuracy_score(ytest,ypredb)
-
-#New predictions with loaded model
-predictions = new_predictions.NewPredictions(new_ann, sc, work_dict, education_dict, marital_dict, occupation_dict, relationship_dict, race_dict, country_dict)
-
+new_model = keras.models.load_model('my_model.h5')
+new_model.summary()
+'''
 
