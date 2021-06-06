@@ -188,8 +188,16 @@ def drop_country():
     root.mainloop()
     return dropdown
 
-def drop_exit():
+def drop_exit(bool_predict, prob_predict):
     create_root()
+    bool_text = ("\nSalary > 50K?   {}".format(bool_predict))
+    prob_text = ('Probability = {}%'.format(prob_predict))
+    label = Label(root, text = bool_text)
+    label.pack()
+    
+    label = Label(root, text = prob_text)
+    label.pack()
+    
     label = Label(root, text = "Exit the program?\n")
     label.pack()
     
@@ -204,7 +212,6 @@ def drop_exit():
 
     root.mainloop()
     return dropdown
-
 
 def get_age():
     root = Tk()
