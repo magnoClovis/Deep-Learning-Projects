@@ -6,8 +6,11 @@ Created on Sun Jun  6 00:25:58 2021
 """
 from tkinter import *
 import options
+import tkinter as tk
+from tkinter import simpledialog
 
 workclass, education, marital, occupation, relationship, race, sex, country = options.clean(options.get_options)
+
 
 def create_root():
     # Create object for dropdown
@@ -190,7 +193,7 @@ def drop_exit():
     label = Label(root, text = "Exit the program?\n")
     label.pack()
     
-    selected.set( "Select an Option" )
+    selected.set("Select an Option")
 
     drop = OptionMenu(root, selected, "Yes", "No")
     drop.pack()
@@ -203,12 +206,100 @@ def drop_exit():
     return dropdown
 
 
-workclass_op = drop_workclass()
-education_op = drop_education()
-marital_op = drop_marital()
-occupation_op = drop_occupation()
-relationship_op = drop_relationship()
-race_op = drop_race()
-sex_op = drop_sex()
-country_op = drop_country()
-exit_op = drop_exit()
+def get_age():
+    root = Tk()
+    root.geometry("200x200")
+    label = Label(root, text = "Age")
+    label.pack()
+    e = Entry(root,width = 40, bg = 'lightgreen', fg = 'black', borderwidth = 4)
+    e.pack()
+    def myClick():
+        global val
+        val = e.get()
+        root.destroy()
+        
+    myButton = Button(root, text="OK", command=myClick)
+    myButton.pack()
+    root.mainloop()
+    return int(val)
+
+def get_ednum():
+    root = Tk()
+    root.geometry("200x200")
+    label = Label(root, text = "Education Number")
+    label.pack()
+    e = Entry(root,width = 40, bg = 'lightgreen', fg = 'black', borderwidth = 4)
+    e.pack()
+    def myClick():
+        global val
+        val = e.get()
+        root.destroy()
+        
+    myButton = Button(root, text="OK", command=myClick)
+    myButton.pack()
+    root.mainloop()
+    return int(val)
+
+
+def get_gain():
+    root = Tk()
+    root.geometry("200x200")
+    label = Label(root, text = "Capital Gain")
+    label.pack()
+    e = Entry(root,width = 40, bg = 'lightgreen', fg = 'black', borderwidth = 4)
+    e.pack()
+    def myClick():
+        global val
+        val = e.get()
+        root.destroy()
+        
+    myButton = Button(root, text="OK", command=myClick)
+    myButton.pack()
+    root.mainloop()
+    return int(val)
+
+def get_loss():
+    root = Tk()
+    root.geometry("200x200")
+    label = Label(root, text = "Capital Loss")
+    label.pack()
+    e = Entry(root,width = 40, bg = 'lightgreen', fg = 'black', borderwidth = 4)
+    e.pack()
+    def myClick():
+        global val
+        val = e.get()
+        root.destroy()
+        
+    myButton = Button(root, text="OK", command=myClick)
+    myButton.pack()
+    root.mainloop()
+    return int(val)
+
+def get_hours():
+    root = Tk()
+    root.geometry("200x200")
+    label = Label(root, text = "Hours per Week")
+    label.pack()
+    e = Entry(root,width = 40, bg = 'lightgreen', fg = 'black', borderwidth = 4)
+    e.pack()
+    def myClick():
+        global val
+        val = e.get()
+        root.destroy()
+        
+    myButton = Button(root, text="OK", command=myClick)
+    myButton.pack()
+    root.mainloop()
+    return int(val)
+
+
+# workclass_op = drop_workclass()
+# education_op = drop_education()
+# marital_op = drop_marital()
+# occupation_op = drop_occupation()
+# relationship_op = drop_relationship()
+# race_op = drop_race()
+# sex_op = drop_sex()
+# country_op = drop_country()
+# exit_op = drop_exit()
+

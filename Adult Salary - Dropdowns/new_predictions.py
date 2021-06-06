@@ -4,7 +4,7 @@ Created on Fri Jun  4 18:22:09 2021
 
 @author: clovi
 """
-
+import dropdown
 
 def NewPredictions(ann, ss, work_dict, education_dict, marital_dict, occupation_dict, relationship_dict, race_dict, country_dict):
     
@@ -13,20 +13,21 @@ def NewPredictions(ann, ss, work_dict, education_dict, marital_dict, occupation_
         data_list = []
         final_data = []
         gender_dict = {'male': 1, 'female': 0}
-        age = int(input("Age: "))
-        workclass = str(input("Workclass: ")).replace("-","").replace(" ","").lower()
-        education = str(input("Education: ")).replace("-","").replace(" ","").lower()
-        education_num = int(input("Education number: "))
-        marital = str(input("Marital status: ")).replace("-","").replace(" ","").lower()
-        occupation = str(input("Occupation: ")).replace("-","").replace(" ","").lower()
-        relationship = str(input("Relationship: ")).replace("-","").replace(" ","").lower()
-        race = str(input("Race: ")).replace("-","").replace(" ","").lower()
-        gender = str(input("Gender: ")).replace("-","").replace(" ","").lower()
-        capital_gain = int(input("Capital gain: "))
-        capital_loss = int(input("Capital loss: "))
-        hours = int(input("Hours per week: "))
-        country = str(input("Native country: ")).replace("-","").replace(" ","").lower()
-         
+        
+        workclass = str(dropdown.drop_workclass()).replace("-","").replace(" ","").lower()
+        education = str(dropdown.drop_education()).replace("-","").replace(" ","").lower()
+        marital = str(dropdown.drop_marital()).replace("-","").replace(" ","").lower()
+        occupation = str(dropdown.drop_occupation()).replace("-","").replace(" ","").lower()
+        relationship = str(dropdown.drop_relationship()).replace("-","").replace(" ","").lower()
+        race = str(dropdown.drop_race()).replace("-","").replace(" ","").lower()
+        gender = str(dropdown.drop_sex()).replace("-","").replace(" ","").lower()
+        country = str(dropdown.drop_country()).replace("-","").replace(" ","").lower()
+        age = dropdown.get_age()
+        education_num = dropdown.get_ednum()
+        capital_gain = dropdown.get_gain()
+        capital_loss = dropdown.get_loss()
+        hours = dropdown.get_hours()
+        
         
         workclass_lst = work_dict[workclass]
         education_lst = education_dict[education]
@@ -67,7 +68,7 @@ def NewPredictions(ann, ss, work_dict, education_dict, marital_dict, occupation_
         print('\n\nSalary > 50K? ', bool_predict)
         print('Probability = ', prob_predict, '%')
         
-        verif = str(input("Type 'exit' to exit the program or press anything to make another prediction. \n")).lower()
-        if verif == 'exit':
+        verif = dropdown.drop_exit()
+        if verif == 'Yes':
             return predictions
 

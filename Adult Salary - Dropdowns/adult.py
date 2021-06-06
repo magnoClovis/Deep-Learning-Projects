@@ -11,6 +11,8 @@ import tensorflow as tf
 import os
 from keras.layers import Dropout
 
+file = os.path.isfile('./adult.h5')
+
 # IMPORTING THE DATASET AND SPLITTING X AND Y
 
 df = pd.read_csv('adult.csv')
@@ -76,54 +78,65 @@ sc = StandardScaler()
 xtrain = sc.fit_transform(xtrain)
 xtest = sc.fit_transform(xtest)
 
-# BUILDING THE NEURAL NETWORK
-ann = tf.keras.models.Sequential()
-ann.add(tf.keras.layers.Dense(units =30, activation = 'relu'))
-ann.add(Dropout(rate = 0.1))
-ann.add(tf.keras.layers.Dense(units = 6, activation = 'relu'))
-ann.add(Dropout(rate = 0.1))
-ann.add(tf.keras.layers.Dense(units = 6, activation = 'sigmoid'))
-ann.add(Dropout(rate = 0.1))
-ann.add(tf.keras.layers.Dense(units = 6, activation = 'sigmoid'))
-ann.add(Dropout(rate = 0.1))
-ann.add(tf.keras.layers.Dense(units = 1, activation = 'sigmoid'))
+if file == False:
+    # BUILDING THE NEURAL NETWORK
+    ann = tf.keras.models.Sequential()
+    ann.add(tf.keras.layers.Dense(units =30, activation = 'relu'))
+    ann.add(Dropout(rate = 0.1))
+    ann.add(tf.keras.layers.Dense(units = 6, activation = 'relu'))
+    ann.add(Dropout(rate = 0.1))
+    ann.add(tf.keras.layers.Dense(units = 6, activation = 'sigmoid'))
+    ann.add(Dropout(rate = 0.1))
+    ann.add(tf.keras.layers.Dense(units = 6, activation = 'sigmoid'))
+    ann.add(Dropout(rate = 0.1))
+    ann.add(tf.keras.layers.Dense(units = 1, activation = 'sigmoid'))
+    
+    ann.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
+    
+    
+    
+    #------------------------------------------------------------------------------
+    # CHECKPOINTS
+    
+    #Create checkpoint path
+    
+    checkpoint_path = "D:\clovi\Estudos\Deep-Learning-Projects\Adult Salary\cp.ckpt"
+    checkpoint_dir = os.path.dirname(checkpoint_path)
+    
+    #Create checkpoint callback
+    cp_callback = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, save_weights_only = True, verbose = 1)
+    hist = ann.fit(xtrain, ytrain, batch_size = 32, epochs = 80, callbacks = [cp_callback])
+    #------------------------------------------------------------------------------
+    
+    ann.save('adult.h5')
+    
+    mean = np.mean(hist.history['accuracy'])
+    
+    # EVALUATING THE NETWORK
+    ypred = ann.predict(xtest)
+    ypredb = (ypred > 0.5)
+    
+    from sklearn.metrics import confusion_matrix, accuracy_score
+    cm = confusion_matrix(ytest, ypredb)
+    
+    mean_test = accuracy_score(ytest,ypredb)
+    loss = np.mean(hist.history['loss'])
+    
+    # NEW PREDICTIONS
+    
+    import new_predictions
+    predictions = new_predictions.NewPredictions(ann, sc, work_dict, education_dict, marital_dict, occupation_dict, relationship_dict, race_dict, country_dict)
 
-ann.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
+
+else: 
+    import keras
+    ann = keras.models.load_model('./adult.h5')
+
+    import new_predictions
+    predictions = new_predictions.NewPredictions(ann, sc, work_dict, education_dict, marital_dict, occupation_dict, relationship_dict, race_dict, country_dict)
 
 
 
-#------------------------------------------------------------------------------
-# CHECKPOINTS
-
-#Create checkpoint path
-
-checkpoint_path = "D:\clovi\Estudos\Deep-Learning-Projects\Adult Salary\cp.ckpt"
-checkpoint_dir = os.path.dirname(checkpoint_path)
-
-#Create checkpoint callback
-cp_callback = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, save_weights_only = True, verbose = 1)
-hist = ann.fit(xtrain, ytrain, batch_size = 32, epochs = 80, callbacks = [cp_callback])
-#------------------------------------------------------------------------------
-
-ann.save('adult.h5')
-
-mean = np.mean(hist.history['accuracy'])
-
-# EVALUATING THE NETWORK
-ypred = ann.predict(xtest)
-ypredb = (ypred > 0.5)
-
-from sklearn.metrics import confusion_matrix, accuracy_score
-cm = confusion_matrix(ytest, ypredb)
-
-mean_test = accuracy_score(ytest,ypredb)
-loss = np.mean(hist.history['loss'])
-
-
-# NEW PREDICTIONS
-
-import new_predictions
-predictions = new_predictions.NewPredictions(ann, sc, work_dict, education_dict, marital_dict, occupation_dict, relationship_dict, race_dict, country_dict)
 
 '''
 The code below stands for getting the checkpoints and saved models if necessary
