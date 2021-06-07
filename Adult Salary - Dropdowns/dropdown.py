@@ -16,9 +16,18 @@ def create_root():
     # Create object for dropdown
     global root 
     root = Tk()
-      
+   
+    app_width = 250
+    app_height = 250
+    
+    screen_width  = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    
+    x = int((screen_width/2) - (app_width/2))
+    y = int((screen_height/2) - (app_height/2))
+    
     # Size
-    root.geometry("200x200")
+    root.geometry(f'{app_width}x{app_height}+{x}+{y}')
     
     # Datatype of menu text
     global selected 
@@ -33,7 +42,7 @@ def change_dropdown(*args):
 def drop_workclass():
     create_root()
     # Create Label
-    label = Label(root, text = "Workclass\n")
+    label = Label(root, text = "Workclass\n" )
     label.pack()
     
     # Initial menu text
@@ -214,8 +223,7 @@ def drop_exit(bool_predict, prob_predict):
     return dropdown
 
 def get_age():
-    root = Tk()
-    root.geometry("200x200")
+    create_root()
     label = Label(root, text = "Age")
     label.pack()
     e = Entry(root,width = 40, bg = 'lightgreen', fg = 'black', borderwidth = 4)
@@ -231,8 +239,7 @@ def get_age():
     return int(val)
 
 def get_ednum():
-    root = Tk()
-    root.geometry("200x200")
+    create_root()
     label = Label(root, text = "Education Number")
     label.pack()
     e = Entry(root,width = 40, bg = 'lightgreen', fg = 'black', borderwidth = 4)
@@ -249,8 +256,7 @@ def get_ednum():
 
 
 def get_gain():
-    root = Tk()
-    root.geometry("200x200")
+    create_root()
     label = Label(root, text = "Capital Gain")
     label.pack()
     e = Entry(root,width = 40, bg = 'lightgreen', fg = 'black', borderwidth = 4)
@@ -266,8 +272,7 @@ def get_gain():
     return int(val)
 
 def get_loss():
-    root = Tk()
-    root.geometry("200x200")
+    create_root()
     label = Label(root, text = "Capital Loss")
     label.pack()
     e = Entry(root,width = 40, bg = 'lightgreen', fg = 'black', borderwidth = 4)
@@ -283,8 +288,7 @@ def get_loss():
     return int(val)
 
 def get_hours():
-    root = Tk()
-    root.geometry("200x200")
+    create_root()
     label = Label(root, text = "Hours per Week")
     label.pack()
     e = Entry(root,width = 40, bg = 'lightgreen', fg = 'black', borderwidth = 4)

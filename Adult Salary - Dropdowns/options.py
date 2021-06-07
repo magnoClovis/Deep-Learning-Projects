@@ -59,4 +59,3 @@ def clean(get_options):
     return workclass, education, marital, occupation, relationship, race, sex, country
 
 workclass, education, marital, occupation, relationship, race, sex, country = clean(get_options)
-

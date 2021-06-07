@@ -65,7 +65,6 @@ def NewPredictions(ann, ss, work_dict, education_dict, marital_dict, occupation_
         result = (prob_predict,bool_predict) 
         predictions.append(result)
         
-
         
         verif = dropdown.drop_exit(bool_predict, prob_predict)
         if verif == 'Yes':
