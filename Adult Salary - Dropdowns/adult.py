@@ -24,7 +24,7 @@ def data_preprocessing(df):
     
     
     #------------------------------------------------------------------------------
-    ''' Creating dummies variables and dictionaries to know the encoding used by 
+    ''' Creating dummy variables and dictionaries to know the encoding used by 
     the computer in OneHotEncoder, the dictionaries will make it easier to make
     predictions when new values are inputted into the network 
     '''
@@ -97,7 +97,7 @@ def building_model(xtrain, xtest, ytrain, ytest, sc, work_dict, education_dict, 
     
     #Create checkpoint path
     
-    checkpoint_path = "D:\clovi\Estudos\Deep-Learning-Projects\Adult Salary\cp.ckpt"
+    checkpoint_path = "D:\clovi\Estudos\Deep-Learning-Projects\Adult Salary - Dropdowns\cp.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
     
     #Create checkpoint callback

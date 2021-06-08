@@ -11,28 +11,51 @@ from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import cross_val_score
 from tensorflow.keras.models import Sequential 
 from tensorflow.keras.layers import Dense 
+from evaluating import build_classifier, evaluating_accuracy
 
 
+# Importing the dataset
+df = pd.read_csv('Churn_Modelling.csv')
+x = df.iloc[:, 3:-1].values
+y = df.iloc[:, -1].values 
 
-def build_classifier(unit_1, unit_2, unit_3, actv_1 = 'relu', actv_2 = 'relu', actv_3 = 'relu',dropout=0.1):
+# Encoding variables
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+x[:,2] = le.fit_transform(x[:,2])
+
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
+ct = ColumnTransformer(transformers = [('encoder', OneHotEncoder(), [1])], remainder = 'passthrough')
+x = np.array(ct.fit_transform(x))
+x = x[:,1:]
+
+# Splitting into training set and test set
+from sklearn.model_selection import train_test_split
+xtrain, xtest, ytrain, ytest = train_test_split(x,y,test_size=0.2, random_state = 0)
+
+# Scaling
+from sklearn.preprocessing import StandardScaler
+ss = StandardScaler()
+xtrain = ss.fit_transform(xtrain)
+xtest = ss.fit_transform(xtest)
+
+def build_classifier():
     ann = tf.keras.models.Sequential()
-    ann.add(tf.keras.layers.Dense(units = unit_1, activation=actv_1))
+    ann.add(tf.keras.layers.Dense(units = 55, 'relu'))
     ann.add(Dropout(rate = 0.1))
-    ann.add(tf.keras.layers.Dense(units = unit_2, activation=actv_2))
+    ann.add(tf.keras.layers.Dense(units = 75, 'relu'))
     ann.add(Dropout(rate = 0.1))
-    ann.add(tf.keras.layers.Dense(units = unit_3, activation=actv_3))
+    ann.add(tf.keras.layers.Dense(units = 55, 'relu'))
     ann.add(Dropout(rate = 0.1))
     ann.add(tf.keras.layers.Dense(units = 1, activation='sigmoid'))
     ann.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
     return ann
 
-def evaluating_accuracy(ss, xtrain, ytrain, num_batch, num_epochs, num_cv, build_ann):
+classifier = KerasClassifier(build_fn = build_ann, batch_size = 32, epochs = 100)
+accuracies = cross_val_score(estimator = classifier, X = xtrain, y = ytrain, cv = 10)
+mean_acc = accuracies.mean()
 
-    classifier = KerasClassifier(build_fn = build_ann, batch_size = num_batch, epochs = num_epochs)
-    accuracies = cross_val_score(estimator = classifier, X = xtrain, y = ytrain, cv = num_cv)
-    mean_acc = accuracies.mean()
-    
-    return mean_acc
 
 
 
