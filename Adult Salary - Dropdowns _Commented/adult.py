@@ -51,6 +51,10 @@ def data_preprocessing(df):
     country_dict = encoding_keys.country(df)
     #------------------------------------------------------------------------------
     
+    '''
+    As a dictionary with the encoding used is already created, it is now possible 
+    to encode the data and substitute the values for the encoded ones.
+    '''
     
     # ENCODING VARIABLES
     from sklearn.preprocessing import OneHotEncoder
@@ -117,7 +121,7 @@ def building_model(xtrain, xtest, ytrain, ytest, sc, work_dict, education_dict, 
     hist = ann.fit(xtrain, ytrain, batch_size = 32, epochs = 80, callbacks = [cp_callback])
     #------------------------------------------------------------------------------
     
-    ann.save('adult.h5')
+    ann.save('adult.h5') 
     
     mean = np.mean(hist.history['accuracy'])
     
@@ -131,7 +135,7 @@ def building_model(xtrain, xtest, ytrain, ytest, sc, work_dict, education_dict, 
     mean_test = accuracy_score(ytest,ypredb)
     loss = np.mean(hist.history['loss'])
     
-    # NEW PREDICTIONS
+    # NEW PREDICTIONS 
     
     import new_predictions
     predictions = new_predictions.NewPredictions(ann, sc, work_dict, education_dict, marital_dict, occupation_dict, relationship_dict, race_dict, country_dict)
