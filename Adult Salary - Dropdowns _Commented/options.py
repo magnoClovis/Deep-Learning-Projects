@@ -5,6 +5,11 @@ Created on Sat Jun  5 23:20:08 2021
 @author: clovi
 """
 
+'''
+Here are the funciton responsible to get the inputs from the boxes, these functions
+also standarize some input data when it is needed
+'''
+
 import pandas as pd
 import numpy as np
 

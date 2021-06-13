@@ -18,6 +18,9 @@ import tensorflow as tf
 import os
 from keras.layers import Dropout
 
+
+
+# The function below is responsible for the data preprocessing
 def data_preprocessing(df):
     # Selecting the columns of the data set with relevant data
     x_1 = df.iloc[:, 0:2]
@@ -92,6 +95,7 @@ def data_preprocessing(df):
     return xtrain, xtest, ytrain, ytest, sc, work_dict, education_dict, marital_dict, occupation_dict, relationship_dict, race_dict, country_dict
 
 
+# The function below is responsible to construct and train the ann model
 def building_model(xtrain, xtest, ytrain, ytest, sc, work_dict, education_dict, marital_dict, occupation_dict, relationship_dict, race_dict, country_dict):
     # BUILDING THE NEURAL NETWORK
     ann = tf.keras.models.Sequential()
@@ -142,6 +146,7 @@ def building_model(xtrain, xtest, ytrain, ytest, sc, work_dict, education_dict, 
     
     return predictions
 
+# The function below is responsible to load some already existing trained model
 def load_model(sc, work_dict, education_dict, marital_dict, occupation_dict, relationship_dict, race_dict, country_dict):
 
     import keras

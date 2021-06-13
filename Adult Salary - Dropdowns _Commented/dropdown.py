@@ -4,6 +4,11 @@ Created on Sun Jun  6 00:25:58 2021
 
 @author: clovi
 """
+
+'''
+Here the interaction boxes for data input are created
+'''
+
 from tkinter import *
 import options
 import tkinter as tk
@@ -11,6 +16,12 @@ from tkinter import simpledialog
 
 workclass, education, marital, occupation, relationship, race, sex, country = options.clean(options.get_options)
 
+
+'''
+This function creates the scratch of the boxes, the other functions add elements
+in this one to change its appearence, they are also responsible to storing the 
+input data in different variables
+'''
 
 def create_root():
     # Create object for dropdown
