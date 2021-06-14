@@ -123,7 +123,6 @@ if __name__ == '__main__':
     
     file = os.path.isfile('./churn_modeling.h5')
 
-    
     xtrain, xtest, ytrain, ytest, ss = data_preprocessing(df)
    
     if file == False:
