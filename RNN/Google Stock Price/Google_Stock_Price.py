@@ -24,8 +24,8 @@ training_set_sc = sc.fit_transform(training_set)
 xtrain = []
 ytrain = []
 
-for i in range(60, 1258):
-    xtrain.append(training_set_sc[i-60:i,0])
+for i in range(120, 1258):
+    xtrain.append(training_set_sc[i-120:i,0])
     ytrain.append(training_set_sc[i, 0])
     
 xtrain,ytrain = np.array(xtrain), np.array(ytrain)
@@ -58,6 +58,7 @@ regressor.add(Dropout(rate=0.2))
 regressor.add(LSTM(units = 50))
 regressor.add(Dropout(rate=0.2))
 
+
 # Adding the output layer
 regressor.add(Dense(units = 1))
 
@@ -75,13 +76,13 @@ test_set = df_test.iloc[:,1:2].values
 
 # Getting the predicted stock price of 2017
 df_total = pd.concat((df['Open'], df_test['Open']), axis = 0)
-inputs = df_total[len(df_total)-len(df_test)-60:].values
+inputs = df_total[len(df_total)-len(df_test)-120:].values
 inputs = inputs.reshape(-1,1)
 inputs = sc.transform(inputs)
 
 xtest = []
-for i in range(60, 80):
-    xtest.append(inputs[i-60:i,0])
+for i in range(120, 140):
+    xtest.append(inputs[i-120:i,0])
 xtest = np.array(xtest)
 
 batch = xtest.shape[0]
