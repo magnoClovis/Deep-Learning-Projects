@@ -104,6 +104,4 @@ c2: [[-0.0799371   0.12356586  0.01738513]]
 Here with retunrn_sequences = False we have that the output is a concatenation of
 'h1' and 'h2', therefore, it is a concatenation of the three first elements of the last row
 and the three last elements of the first row.
-
-
 '''
