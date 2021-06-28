@@ -92,8 +92,8 @@ print('Building model...')
 # create an LSTM network with a single LSTM
 input_ = Input(shape = (MAX_SEQUENCE_LENGHT,))
 x = embedding_layer(input_)
-x = LSTM(15, return_sequences=True)(x)
-# x = Bidirectional(LSTM(15, return_sequences=True))(x)
+# x = LSTM(15, return_sequences=True)(x)
+x = Bidirectional(LSTM(15, return_sequences=True))(x)
 x = GlobalMaxPool1D()(x)
 output = Dense(len(possible_labels),activation = 'sigmoid')(x)
 

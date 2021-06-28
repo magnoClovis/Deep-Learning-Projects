@@ -24,7 +24,8 @@ training_set_sc = sc.fit_transform(training_set)
 xtrain = []
 ytrain = []
 
-for i in range(120, 1258):
+len_training_set = len(training_set_sc)
+for i in range(120, len_training_set):
     xtrain.append(training_set_sc[i-120:i,0])
     ytrain.append(training_set_sc[i, 0])
     
